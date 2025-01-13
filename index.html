@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 
-    <title>DevSolutions4You</title>
+    <title>4YouDevSolutions</title>
     <meta content="" name="descriptison" />
     <meta content="" name="keywords" />
 
@@ -40,6 +40,8 @@
 
     <!-- Template Main CSS File -->
     <link href="assets/css/style.css" rel="stylesheet" />
+    <!-- recaptcha -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
     <script
       type="text/javascript"
@@ -56,7 +58,7 @@
       <div class="container-fluid d-flex">
         <div class="logo mr-auto">
           <h1 class="text-light">
-            <a href="index.html"><span>DevSolutions4You</span></a>
+            <a href="index.html"><span>4YouDevSolutions</span></a>
           </h1>
           <!-- Uncomment below if you prefer to use an image logo -->
           <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
@@ -115,7 +117,7 @@
           <div class="col-lg-6 order-1 order-lg-2 hero-img">
             <img
               src="assets/img/hero-img.svg"
-              class="img-fluid animated"
+              class="img-fluid ani mated"
               alt=""
             />
           </div>
@@ -135,7 +137,7 @@
               <img
                 src="assets/img/about-img.svg"
                 class="img-fluid"
-                alt="About DevSolutions4You"
+                alt="About 4YouDevSolutions"
                 data-aos="zoom-in"
               />
             </div>
@@ -144,7 +146,7 @@
                 Empowering Businesses with Custom Software Solutions
               </h3>
               <p data-aos="fade-up" data-aos-delay="100">
-                At DevSolutions4You, we specialize in building custom software
+                At 4YouDevSolutions, we specialize in building custom software
                 solutions designed to meet your unique business needs. Our
                 mission is to deliver software that seamlessly aligns with your
                 goals, enhances your workflows, and drives measurable results.
@@ -268,7 +270,7 @@
               <div class="icon-box">
                 <div class="icon"><i class="fab fa-java"></i></div>
                 <!-- Java icon for Java and Spring Boot combined -->
-                <h4 class="title"><a href="#">Java Spring Boot</a></h4>
+                <h4 class="title"><a href="#">Java</a></h4>
                 <p class="description">
                   Building scalable backend services with Spring Boot
                 </p>
@@ -909,7 +911,7 @@
                 <div class="email">
                   <i class="icofont-envelope"></i>
                   <h4>Email:</h4>
-                  <p>devsolutions4you@gmail.com</p>
+                  <p>4youdevsolutions@gmail.com</p>
                 </div>
 
                 <!-- <div class="phone">
@@ -932,7 +934,7 @@
               data-aos="fade-up"
               data-aos-delay="200"
             >
-              <form ud="contactForm" role="form" class="php-email-form">
+              <form id="contactForm" role="form" class="php-email-form">
                 <div class="form-row">
                   <div class="form-group col-md-6">
                     <label for="name">Your Name</label>
@@ -976,6 +978,7 @@
                   <textarea
                     class="form-control"
                     name="message"
+                    id="message"
                     rows="10"
                     data-rule="required"
                     data-msg="Please write something for us"
@@ -989,6 +992,12 @@
                     Your message has been sent. Thank you!
                   </div>
                 </div>
+                <div
+                  class="g-recaptcha"
+                  data-sitekey="6LfLPbUqAAAAABft0xAy6_x2uHfroySQdiRV6Td2"
+                ></div>
+                <div class="validate"></div>
+                <br />
                 <div class="text-center">
                   <button type="submit">Send Message</button>
                 </div>
@@ -1122,7 +1131,7 @@
 
       <div class="container py-4">
         <div class="copyright">
-          &copy; Copyright <strong><span>DevSolutions4You</span></strong
+          &copy; Copyright <strong><span>4YouDevSolutions</span></strong
           >. All Rights Reserved
         </div>
         <div class="credits">

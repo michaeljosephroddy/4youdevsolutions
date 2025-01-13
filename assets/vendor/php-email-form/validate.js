@@ -1,85 +1,141 @@
-jQuery(document).ready(function ($) {
+document.addEventListener("DOMContentLoaded", function () {
   "use strict";
 
-  // Contact Form
-  $("form.php-email-form").submit(function (e) {
+  const form = document.querySelector("form.php-email-form");
+  form.addEventListener("submit", async function (e) {
     e.preventDefault();
 
-    var f = $(this).find(".form-group"),
-      ferror = false,
-      emailExp = /^[^\s()<>@,;:\/]+@\w[\w\.-]+\.[a-z]{2,}$/i;
+    let ferror = false;
+    const emailExp = /^[^\s()<>@,;:\/]+@\w[\w\.-]+\.[a-z]{2,}$/i;
 
-    f.children("input, textarea").each(function () {
-      // Validation logic remains unchanged
-      var i = $(this); // current input
-      var rule = i.attr("data-rule");
-      if (rule !== undefined) {
-        var ierror = false;
-        var pos = rule.indexOf(":", 0);
-        var exp = rule.substr(pos + 1, rule.length);
-        rule = rule.substr(0, pos);
-        switch (rule) {
-          case "required":
-            if (i.val() === "") {
-              ferror = ierror = true;
-            }
-            break;
-          case "minlen":
-            if (i.val().length < parseInt(exp)) {
-              ferror = ierror = true;
-            }
-            break;
-          case "email":
-            if (!emailExp.test(i.val())) {
-              ferror = ierror = true;
-            }
-            break;
+    form.querySelectorAll(".form-group").forEach((group) => {
+      group.querySelectorAll("input, textarea").forEach((input) => {
+        const rule = input.getAttribute("data-rule");
+        if (rule) {
+          let ierror = false;
+          const pos = rule.indexOf(":");
+          const exp = pos !== -1 ? rule.substr(pos + 1) : null;
+          const type = pos !== -1 ? rule.substr(0, pos) : rule;
+
+          if (type === "required" && input.value.trim() === "") {
+            ferror = ierror = true;
+          } else if (type === "minlen" && input.value.length < parseInt(exp)) {
+            ferror = ierror = true;
+          } else if (type === "email" && !emailExp.test(input.value)) {
+            ferror = ierror = true;
+          }
+
+          const validateMsg = input.nextElementSibling;
+          if (validateMsg && validateMsg.classList.contains("validate")) {
+            validateMsg.textContent = ierror
+              ? input.getAttribute("data-msg") || "Invalid input"
+              : "";
+            validateMsg.style.display = ierror ? "block" : "none";
+          }
         }
-        i.next(".validate")
-          .html(
-            ierror
-              ? i.attr("data-msg") !== undefined
-                ? i.attr("data-msg")
-                : "wrong Input"
-              : ""
-          )
-          .show("blind");
-      }
+      });
     });
 
-    if (ferror) return false;
+    const recaptchaResponse = grecaptcha.getResponse();
 
-    // Prepare Email.js payload
-    const formData = {
-      from_name: $("#name").val(),
-      from_email: $("#email").val(),
-      subject: $("#subject").val(),
-      message: $("textarea[name='message']").val(),
-    };
-
-    const serviceID = "service_k6rbzmg";
-    const templateID = "template_fth036p";
-
-    $(this).find(".loading").slideDown();
-    $(this).find(".sent-message, .error-message").slideUp();
-
-    emailjs.send(serviceID, templateID, formData).then(
-      (response) => {
-        console.log("SUCCESS!", response.status, response.text);
-        $(this).find(".loading").slideUp();
-        $(this).find(".sent-message").slideDown();
-        $(this).find("input:not(input[type=submit]), textarea").val("");
-      },
-      (error) => {
-        console.error("FAILED...", error);
-        $(this).find(".loading").slideUp();
-        $(this)
-          .find(".error-message")
-          .slideDown()
-          .html("Failed to send message. Please try again later.");
+    // Validate reCAPTCHA
+    if (!recaptchaResponse) {
+      ferror = true;
+      const recaptchaValidateMsg = document.querySelector(
+        ".g-recaptcha + .validate"
+      );
+      if (recaptchaValidateMsg) {
+        recaptchaValidateMsg.textContent = "Please complete the reCAPTCHA.";
+        recaptchaValidateMsg.style.display = "block";
       }
-    );
+    } else {
+      // Clear any previous reCAPTCHA error message
+      const recaptchaValidateMsg = document.querySelector(
+        ".g-recaptcha + .validate"
+      );
+      if (recaptchaValidateMsg) {
+        recaptchaValidateMsg.textContent = "";
+        recaptchaValidateMsg.style.display = "none";
+      }
+    }
 
-    return false;
+    if (ferror) return;
+
+    // Show loading and hide previous messages
+    const loading = form.querySelector(".loading");
+    const sentMessage = form.querySelector(".sent-message");
+    const errorMessage = form.querySelector(".error-message");
+
+    loading.style.display = "block"; // Show loading
+    if (sentMessage) sentMessage.style.display = "none";
+    if (errorMessage) errorMessage.style.display = "none";
+
+    try {
+      const response = await fetch(
+        "https://66sb2cl3rh.execute-api.eu-west-1.amazonaws.com/recaptcha-vaidator-prod/recaptcha-validator",
+        {
+          method: "POST",
+          body: JSON.stringify({ recaptcha_response: recaptchaResponse }),
+        }
+      );
+
+      const result = await response.json();
+
+      if (result.message === "reCAPTCHA verification failed") {
+        // Hide loading and show error message
+        loading.style.display = "none";
+        if (errorMessage) {
+          errorMessage.style.display = "block";
+          errorMessage.innerHTML = result.message;
+        }
+        return;
+      }
+
+      const formData = {
+        from_name: document.querySelector("#name").value,
+        from_email: document.querySelector("#email").value,
+        subject: document.querySelector("#subject").value,
+        message: document.querySelector("#message").value,
+      };
+
+      const serviceID = "service_k6rbzmg";
+      const templateID = "template_fth036p";
+
+      console.log(formData);
+
+      emailjs.send(serviceID, templateID, formData).then(
+        (response) => {
+          console.log("SUCCESS!", response.status, response.text);
+
+          // Hide loading and show success message
+          loading.style.display = "none";
+          if (sentMessage) sentMessage.style.display = "block";
+
+          // Clear form inputs
+          form
+            .querySelectorAll("input:not([type=submit]), textarea")
+            .forEach((input) => (input.value = ""));
+        },
+        (error) => {
+          console.error("FAILED...", error);
+
+          // Hide loading and show error message
+          loading.style.display = "none";
+          if (errorMessage) {
+            errorMessage.style.display = "block";
+            errorMessage.innerHTML =
+              "Failed to send message. Please try again later.";
+          }
+        }
+      );
+    } catch (error) {
+      console.error("Error:", error);
+      // Hide loading and show error message
+      loading.style.display = "none";
+      if (errorMessage) {
+        errorMessage.style.display = "block";
+        errorMessage.innerHTML = "Error verifying reCAPTCHA";
+      }
+    }
   });
 });
