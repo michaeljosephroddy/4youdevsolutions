@@ -93,12 +93,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const formData = {
         from_name: document.querySelector("#name").value,
-        from_email: document.querySelector("#email").value,
+        reply_to: document.querySelector("#email").value, // Use "reply_to" instead of "from_email"
+        from_email: "michael@4youdevsolutions.com", // Must be your verified WorkMail email
         subject: document.querySelector("#subject").value,
         message: document.querySelector("#message").value,
       };
 
-      const serviceID = "service_k6rbzmg";
+      const serviceID = "service_vg3hdfs";
+      // const serviceID = "service_k6rbzmg";
       const templateID = "template_fth036p";
 
       console.log(formData);
