@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const emailExp = /^[^\s()<>@,;:\/]+@\w[\w\.-]+\.[a-z]{2,}$/i;
 
     form.querySelectorAll(".form-group").forEach((group) => {
-      group.querySelectorAll("input, textarea").forEach((input) => {
+      group.querySelectorAll("input, textarea, select").forEach((input) => {
         const rule = input.getAttribute("data-rule");
         if (rule) {
           let ierror = false;
@@ -22,6 +22,11 @@ document.addEventListener("DOMContentLoaded", function () {
           } else if (type === "minlen" && input.value.length < parseInt(exp)) {
             ferror = ierror = true;
           } else if (type === "email" && !emailExp.test(input.value)) {
+            ferror = ierror = true;
+          }
+
+          // Special check for select elements (dropdown)
+          if (input.tagName.toLowerCase() === "select" && input.value === "") {
             ferror = ierror = true;
           }
 
@@ -95,8 +100,8 @@ document.addEventListener("DOMContentLoaded", function () {
         from_name: document.querySelector("#name").value,
         reply_to: document.querySelector("#email").value, // Use "reply_to" instead of "from_email"
         from_email: "michael@4youdevsolutions.com", // Must be your verified WorkMail email
-        subject: document.querySelector("#subject").value,
-        message: document.querySelector("#message").value,
+        budget: document.querySelector("#budget").value,
+        description: document.querySelector("#description").value,
       };
 
       const serviceID = "service_vg3hdfs";
@@ -113,10 +118,17 @@ document.addEventListener("DOMContentLoaded", function () {
           loading.style.display = "none";
           if (sentMessage) sentMessage.style.display = "block";
 
-          // Clear form inputs
+          // Clear form inputs including select elements
           form
-            .querySelectorAll("input:not([type=submit]), textarea")
-            .forEach((input) => (input.value = ""));
+            .querySelectorAll("input:not([type=submit]), textarea, select")
+            .forEach((element) => {
+              if (element.tagName === "SELECT") {
+                // Reset select to the first option or a disabled placeholder
+                element.selectedIndex = 0; // Reset to the first option (e.g., "Select Budget Range")
+              } else {
+                element.value = ""; // Clear input or textarea value
+              }
+            });
         },
         (error) => {
           console.error("FAILED...", error);
