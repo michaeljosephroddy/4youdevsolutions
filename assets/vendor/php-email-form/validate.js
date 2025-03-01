@@ -116,7 +116,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
           // Hide loading and show success message
           loading.style.display = "none";
-          if (sentMessage) sentMessage.style.display = "block";
+          if (sentMessage) {
+            sentMessage.style.display = "block";
+            // Hide the success message after 5 seconds
+            setTimeout(() => {
+              sentMessage.style.display = "none";
+            }, 5000);
+          }
 
           // Clear form inputs including select elements
           form
