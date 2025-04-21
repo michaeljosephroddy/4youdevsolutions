@@ -32,6 +32,15 @@ h6,
   font-family: "Raleway", sans-serif;
 }
 
+.hero-profile-img {
+  width: 400px;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 50%;
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
 /*--------------------------------------------------------------
 # Back to top button
 --------------------------------------------------------------*/
@@ -591,18 +600,18 @@ section {
 /*--------------------------------------------------------------
 # Portfolio
 --------------------------------------------------------------*/
-.portfolio .portfolio-item {
+.projects .projects-item {
   margin-bottom: 30px;
 }
 
-.portfolio #portfolio-flters {
+.projects #projects-flters {
   padding: 0;
   margin: 0 0 35px 0;
   list-style: none;
   text-align: center;
 }
 
-.portfolio #portfolio-flters li {
+.projects #projects-flters li {
   cursor: pointer;
   margin: 0 15px 15px 0;
   display: inline-block;
@@ -615,16 +624,16 @@ section {
   transition: all 0.3s ease-in-out;
 }
 
-.portfolio #portfolio-flters li:hover,
-.portfolio #portfolio-flters li.filter-active {
+.projects #projects-flters li:hover,
+.projects #projects-flters li.filter-active {
   color: #eb5d1e;
 }
 
-.portfolio #portfolio-flters li:last-child {
+.projects #projects-flters li:last-child {
   margin-right: 0;
 }
 
-.portfolio .portfolio-wrap {
+.projects .projects-wrap {
   transition: 0.3s;
   position: relative;
   overflow: hidden;
@@ -632,7 +641,7 @@ section {
   z-index: 1;
 }
 
-.portfolio .portfolio-wrap::before {
+.projects .projects-wrap::before {
   content: "";
   background: rgba(122, 105, 96, 0.6);
   position: absolute;
@@ -644,13 +653,13 @@ section {
   z-index: 2;
 }
 
-.portfolio .portfolio-wrap img {
+.projects .projects-wrap img {
   transition: 0.3s;
   position: relative;
   z-index: 1;
 }
 
-.portfolio .portfolio-wrap .portfolio-links {
+.projects .projects-wrap .projects-links {
   opacity: 0;
   left: 0;
   right: 0;
@@ -661,7 +670,7 @@ section {
   transition: all ease-in-out 0.3s;
 }
 
-.portfolio .portfolio-wrap .portfolio-links a {
+.projects .projects-wrap .projects-links a {
   color: #eb5d1e;
   margin: 0 4px;
   font-size: 18px;
@@ -677,16 +686,16 @@ section {
   transition: 0.3s;
 }
 
-.portfolio .portfolio-wrap .portfolio-links a i {
+.projects .projects-wrap .projects-links a i {
   line-height: 1;
 }
 
-.portfolio .portfolio-wrap .portfolio-links a:hover {
+.projects .projects-wrap .projects-links a:hover {
   background: #eb5d1e;
   color: #fff;
 }
 
-.portfolio .portfolio-wrap .portfolio-info {
+.projects .projects-wrap .projects-info {
   opacity: 0;
   position: absolute;
   bottom: -20px;
@@ -697,28 +706,28 @@ section {
   transition: all ease-in-out 0.3s;
 }
 
-.portfolio .portfolio-wrap .portfolio-info h4 {
+.projects .projects-wrap .projects-info h4 {
   font-size: 20px;
   color: #fff;
   font-weight: 600;
 }
 
-.portfolio .portfolio-wrap .portfolio-info p {
+.projects .projects-wrap .projects-info p {
   color: #ffffff;
   font-size: 14px;
   text-transform: uppercase;
 }
 
-.portfolio .portfolio-wrap:hover::before {
+.projects .projects-wrap:hover::before {
   left: 0;
 }
 
-.portfolio .portfolio-wrap:hover .portfolio-links {
+.projects .projects-wrap:hover .projects-links {
   opacity: 1;
   top: calc(50% - 16px);
 }
 
-.portfolio .portfolio-wrap:hover .portfolio-info {
+.projects .projects-wrap:hover .projects-info {
   opacity: 1;
   bottom: 0;
 }
